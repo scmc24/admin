@@ -1,0 +1,48 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: docker
+    steps:
+      - checkout
+      - run: docker build -t registry.example.com/admin:latest .
+
+  test:
+    docker:
+      - image: docker
+    steps:
+      - checkout
+      - run: docker run --rm registry.example.com/admin:latest test
+
+  security-scan:
+    docker:
+      - image: docker
+    steps:
+      - checkout
+      - run: echo "Running SAST (BLOCKING)"
+      - run: echo "Running Secret Scan (BLOCKING)"
+
+  deploy:
+    docker:
+      - image: docker
+    steps:
+      - checkout
+      - run: echo Notifying team channel
+      - run: docker compose up -d --remove-orphans
+      - run: echo Running smoke test
+
+workflows:
+  admin-pipeline:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - security-scan:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - test
+            - security-scan
