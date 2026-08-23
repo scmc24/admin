@@ -28,7 +28,7 @@ jobs:
       - image: docker:dind
     steps:
       - checkout
-      - run: echo "Manual deploy: utilisez le bouton Deploy/Sync de l extension VS Code."
+      - run: echo "Manual deploy, utilisez le bouton Deploy/Sync de l extension VS Code."
 
 workflows:
   admin-pipeline:
