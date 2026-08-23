@@ -6,13 +6,26 @@ jobs:
       - image: docker:dind
     steps:
       - checkout
+      - setup_remote_docker:
+          version: default
+          docker_layer_caching: true
       - run: docker build -t registry.example.com/admin:latest .
+      - run: docker save registry.example.com/admin:latest -o image.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - image.tar
 
   test:
     docker:
       - image: docker:dind
     steps:
       - checkout
+      - setup_remote_docker:
+          version: default
+      - attach_workspace:
+          at: .
+      - run: docker load -i image.tar
       - run: docker run --rm registry.example.com/admin:latest test
 
   security-scan:
