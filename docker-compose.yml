@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  admin:
+    image: mini-ecommerce/admin:latest
+    ports:
+      - "3001:3001"
+    deploy:
+      replicas: 1
+    environment:
+      # ADMIN_TOKEN résolu via un gestionnaire de secrets externe (ref: admin_token)
+      ADMIN_TOKEN: "${admin_token}"
+      # CATALOG_API_KEY résolu via un gestionnaire de secrets externe (ref: catalog_api_key)
+      CATALOG_API_KEY: "${catalog_api_key}"
+      CATALOG_URL: "http://catalog.shop-demo.carto-land.com"

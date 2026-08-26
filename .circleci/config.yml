@@ -36,7 +36,7 @@ jobs:
       - run: echo "SAST (BLOCKING)"
       - run: pip install --quiet pip-audit && pip-audit -r requirements.txt
       - run: echo "Secret Scan (BLOCKING)"
-      - run: curl -sSfL https://raw.githubusercontent.com/gitleaks/gitleaks/master/scripts/install.sh | sh -s -- -b /usr/local/bin && gitleaks detect --no-git -v
+      - run: curl -sSfL https://raw.githubusercontent.com/gitleaks/gitleaks/main/scripts/install.sh | sh -s -- -b /usr/local/bin && gitleaks detect --no-git -v
 
   deploy:
     docker:
