@@ -36,7 +36,7 @@ jobs:
       - run: echo "SAST (BLOCKING)"
       - run: pip install --quiet pip-audit && pip-audit -r requirements.txt
       - run: echo "Secret Scan (BLOCKING)"
-      - run: curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep browser_download_url | grep linux_x64 | cut -d """ -f 4 | xargs curl -sL -o /tmp/gitleaks.tar.gz && tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks && chmod +x /usr/local/bin/gitleaks && gitleaks detect --no-git -v
+      - run: curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep browser_download_url | grep linux_x64 | cut -d" -f 4 | xargs curl -sL -o /tmp/gitleaks.tar.gz && tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks && chmod +x /usr/local/bin/gitleaks && gitleaks detect --no-git -v
 
   deploy:
     docker:
