@@ -36,7 +36,7 @@ jobs:
       - run: echo "SAST (BLOCKING)"
       - run: pip install --quiet pip-audit && pip-audit -r requirements.txt
       - run: echo "Secret Scan (BLOCKING)"
-      - run: curl -sSfL https://raw.githubusercontent.com/gitleaks/gitleaks/main/scripts/install.sh | sh -s -- -b /usr/local/bin && gitleaks detect --no-git -v
+      - run: curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep browser_download_url | grep linux_x64 | cut -d """ -f 4 | xargs curl -sL -o /tmp/gitleaks.tar.gz && tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks && chmod +x /usr/local/bin/gitleaks && gitleaks detect --no-git -v
 
   deploy:
     docker:
@@ -46,7 +46,7 @@ jobs:
       - run: mkdir -p ~/.ssh
       - run: echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
       - run: chmod 600 ~/.ssh/id_ed25519
-      - run: ssh -o StrictHostKeyChecking=no deploy@185.187.170.204 "cd ~/admin && docker compose up -d --remove-orphans"
+      - run: ssh -o StrictHostKeyChecking=no deploy@185.187.170.204 "cd ~/admin && docker compose up --build -d --remove-orphans"
 
 workflows:
   admin-pipeline:
