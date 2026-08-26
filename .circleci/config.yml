@@ -44,7 +44,7 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p ~/.ssh
-      - run: echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+      - run: echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_ed25519
       - run: chmod 600 ~/.ssh/id_ed25519
       - run: ssh -o StrictHostKeyChecking=no deploy@185.187.170.204 "cd ~/admin && docker compose up --build -d --remove-orphans"
 
